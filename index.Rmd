@@ -1,0 +1,195 @@
+---
+title: "Geovisor del Programa de las Naciones Unidas para el Desarrollo (PNUD) para Costa Rica"
+output: 
+  flexdashboard::flex_dashboard:
+    orientation: colum
+    social: menu
+    source_code: embed
+---
+
+```{r setup, include=FALSE}
+library(ggplot2)
+library(plotly)
+library(plyr)
+library(flexdashboard)
+# Paquete para manipulación de datos
+library(dplyr)
+
+# Paquete para manejo de datos vectoriales
+library(sf)
+
+# Paquetes para manejo de datos raster
+library(terra)
+
+
+# Paquete para mapas interactivos
+library(leaflet)
+
+#Paquete para manejo de tablas
+library(DT)
+
+
+#Paquete para graficación
+library(ggplot2)
+
+library(plotly)
+
+# Make some noisily increasing data
+set.seed(955)
+dat <- data.frame(cond = rep(c("A", "B"), each=10),
+                  xvar = 1:20 + rnorm(20,sd=3),
+                  yvar = 1:20 + rnorm(20,sd=3))
+```
+
+
+```{r datos-csv}
+# Carga de datos desde un archivo CSV
+proyectos_pnud<-
+  read.csv(file = 'https://raw.githubusercontent.com/Francini-ap/datos_proyectos_unidos_pnud/master/proyectos_unidos_pnud21.csv')
+```
+
+```{r datos}
+# Lectura de una capa vectorial (GeoJSON) Proyecto aSADAS
+asadas <-
+  st_read(
+    "https://francini-ap.github.io/datos_proyectos_unidos_pnud/Geojason_wgs84/asadas.geojson",
+    quiet = TRUE
+  )
+# Lectura de una capa vectorial (GeoJSON) Proyecto Paisajes prodcutivos
+paisajes_productivos2 <-
+  st_read(
+    "https://francini-ap.github.io/datos_proyectos_unidos_pnud/Geojason_wgs84/paisajes_productivos3.geojson",
+    quiet = TRUE
+  )
+# Lectura de una capa vectorial (GeoJSON) Proyecto Paisajes prodcutivos
+ppd<-
+  st_read(
+    "https://francini-ap.github.io/datos_proyectos_unidos_pnud/Geojason_wgs84/ppd.geojson",
+    quiet = TRUE
+  )
+  
+# Lectura de una capa raster de DEM
+bio_cr <-
+  rast(
+    "C:/Users/PC/Curso R/proyecto_final/raster/bio12_cr.tif" )
+
+```
+
+
+
+
+Datos de los proyectos ejecutados por PNUD en Costa Rica
+=======================================================================
+
+Row
+-----------------------------------------------------------------------
+
+### Geovisor PNUD
+
+```{r}
+# Conversión del objeto altitud a la clase RasterLayer
+
+bio_cr_rl <- raster::raster(bio_cr)
+
+# Mapa leaflet básico con capas de provincias y registros de presencia de felinos
+leaflet() %>%
+  addTiles(group = "OSM (default)") %>%
+  addProviderTiles(providers$Esri.WorldImagery, group = "Esri World Imagery") %>%
+  addTiles() %>%
+  addRasterImage(
+    bio_cr_rl, 
+    group = "Isotermalidad",
+    opacity = 0.6
+  ) %>% 
+# Overlay groups
+  addPolygons (
+    data = asadas,
+    group = "Proyecto ASADA",
+    color = "#0468B1",
+    fillColor = "#0468B1",
+    stroke = TRUE,
+    weight = 3.0,
+    opacity = 0.80,
+    fillOpacity = 0.8,
+    popup = "nom_proyec") %>%
+  addPolygons (
+    data = paisajes_productivos2,
+    group = "Proyecto Paisajes Productivos",
+    color = "#0468B1",
+    fillColor = "#0468B1",
+    stroke = TRUE,
+    weight = 3.0,
+    opacity = 0.80,
+    fillOpacity = 0.8) %>%
+  addMeasure(
+    position = "bottomleft",
+    primaryLengthUnit = "meters",
+    primaryAreaUnit = "sqmeters",
+    activeColor = "#3D535D",
+    completedColor = "#7D4479")%>%
+  addProviderTiles(providers$Esri.WorldStreetMap) %>%
+	  addMiniMap(
+		tiles = providers$Esri.WorldStreetMap,
+		toggleDisplay = TRUE)%>%
+ addLayersControl(baseGroups = c("OSM", "Esri World Imagery", "Isotermalidad"), 
+                   overlayGroups = c("Proyecto ASADA", "Proyecto Paisajes Productivos"),
+                   options = layersControlOptions(collapsed = FALSE))
+```
+
+Column
+-----------------------------------------------------------------------
+
+### Información del Geovisor
+
+```{r}
+# geovisor que contenga la información geográfica generada por el Programa de las Naciones Unidas para el Desarrollo en Costa Rica
+```
+
+### Lista de proyecto vigentes del PNUD Costa Rica
+
+```{r}
+proyectos_pnud %>%
+  select(nom_proyec, nom_abrev,programa, presupuesto, nom_donant,mar_genero,nom_proyec,num_person)%>%
+  rename("Nombre Completo Proyecto" = "nom_proyec", "Nombre proyecto abreviado"= "nom_abrev", "Programa PNUD" = "programa", "Presupuesto" = "presupuesto","Nombre donante" = "nom_donant", "Marcador género" = "mar_genero","Numero de personas involucradas" = "num_person")%>%
+datatable(proyectos_pnud, options = list(
+  language = list(url = '//cdn.datatables.net/plug-ins/1.10.11/i18n/Spanish.json'),
+  pageLength = 5
+))
+
+```
+
+geom_density
+=======================================================================
+
+Row
+-----------------------------------------------------------------------
+
+### stat_density Example
+
+```{r}
+
+
+```
+
+### Add Conditional Density Curves to Plot
+
+```{r}
+
+
+```
+
+Row
+-----------------------------------------------------------------------
+
+### geom_density and facet_wrap Together
+
+```{r}
+
+```
+
+### Density and Scatterplot Overlay Using geom_density
+
+```{r}
+
+```
+
