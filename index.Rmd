@@ -78,7 +78,7 @@ bio_cr <-
 
 
 
-Datos de los proyectos ejecutados por PNUD en Costa Rica
+Geovisor 
 =======================================================================
 
 Row
@@ -141,9 +141,19 @@ Column
 
 ### Información del Geovisor
 
-```{r}
-# geovisor que contenga la información geográfica generada por el Programa de las Naciones Unidas para el Desarrollo en Costa Rica
-```
+
+El geovisor del Programa de las Naciones Unidas para el Desarrollo (PNUD) en Costa Rica, muestran las áreas de impacto e información de los proyectos ejecutados y vigentes actualmente en el país. 
+
+A partir de este geovisor se puede visualizar  la información geográfica y datos relevantes de cada proyecto, con el objetivo de que se pueda mostrar  el imapacto de los proyecto en el territorio nacional de manera eficiente, y a la vez que sea de acceso para todo el personal de la organización, donantes y personas usuarias. 
+
+
+<center>![R Users Group - Ecuador]( C:/Users/PC/Pictures/Logos/PNUD - copia (2).jpg)</center>
+
+
+
+
+Este geovisor se realizó a partir de un trabajo final de graduación de la  Maestría Profesional en Sistemas de Información Geográficas y Teledetección de la Universidad Nacional y Universidad de Costa Rica. 
+
 
 ### Lista de proyecto vigentes del PNUD Costa Rica
 
@@ -158,10 +168,10 @@ datatable(proyectos_pnud, options = list(
 
 ```
 
-geom_density
+Datos de los proyectos 
 =======================================================================
 
-Row
+Colum
 -----------------------------------------------------------------------
 
 ### stat_density Example
@@ -171,25 +181,34 @@ Row
 
 ```
 
-### Add Conditional Density Curves to Plot
-
-```{r}
-
-
-```
-
 Row
 -----------------------------------------------------------------------
 
-### geom_density and facet_wrap Together
+### Presupuesto total de cada uno de los proyectos del PNUD Costa Rica, vigentes 2020-2021
 
-```{r}
-
+```{r grafico-presupuesto}
+# Gráfico de estacionalidad
+proyectos_pnud %>%
+  plot_ly (x = ~ (presupuesto), 
+          y = ~ (nom_abrev),
+          type="bar", mode="markers", color = I("#0468B1"), orientation='h') %>%
+  config(locale = "es")%>%
+  layout(title = "Presupuesto total de los proyectos del PNUD Costa Rica, 2020-2021",
+         xaxis = list(title = "Presupuesto total en $"),
+         yaxis = list(title = "Nombre proyecto"))
 ```
 
-### Density and Scatterplot Overlay Using geom_density
+### Número de personas involucradas de cada uno de los proyectos del PNUD Costa Rica, vigentes 2020-2021
 
 ```{r}
-
+# Gráfico de líneas de casos de covid en Costa Rica
+proyectos_pnud %>%
+ plot_ly(x = ~ nom_abrev,
+          y = ~ num_person,
+          type="bar", color = I("#0468B1")) %>%
+  config(locale = "es")%>%
+  layout(title = "Número de personas involucradas en cada proyecto del PNUD Costa Rica, 2019-2021",
+         xaxis = list(title = "Nombre proyecto"),
+         yaxis = list(title = "N°personas involucradas"))
 ```
 
