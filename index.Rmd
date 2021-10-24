@@ -174,10 +174,20 @@ Datos de los proyectos
 Colum
 -----------------------------------------------------------------------
 
-### stat_density Example
+### Cantidad de proyectos por programa PNUD, Costa Rica
 
 ```{r}
-
+proyectos_pnud %>%
+  group_by(programa ) %>%
+  summarize(suma_pograma = n()) %>%
+  filter(!is.na(programa))  %>%
+  plot_ly(x = ~ programa,
+          y = ~ suma_pograma ,
+          type="bar", color = I("#0468B1")) %>%
+  config(locale = "es")%>%
+  layout(title = "Cantidad de proyectos por cada programa PNUD, Costa Rica",
+         xaxis = list(title = "Programa"),
+         yaxis = list(title = "Número proyectos "))
 
 ```
 
@@ -198,17 +208,20 @@ proyectos_pnud %>%
          yaxis = list(title = "Nombre proyecto"))
 ```
 
-### Número de personas involucradas de cada uno de los proyectos del PNUD Costa Rica, vigentes 2020-2021
+### Cantidad de proyectos según marcador de género asignado PNUD Costa Rica
 
 ```{r}
-# Gráfico de líneas de casos de covid en Costa Rica
+# Gráfico de barras 
 proyectos_pnud %>%
- plot_ly(x = ~ nom_abrev,
-          y = ~ num_person,
+  group_by(mar_genero ) %>%
+  summarize(suma_pograma = n()) %>%
+  filter(!is.na(mar_genero))  %>%
+  plot_ly(x = ~ mar_genero,
+          y = ~ suma_pograma ,
           type="bar", color = I("#0468B1")) %>%
   config(locale = "es")%>%
-  layout(title = "Número de personas involucradas en cada proyecto del PNUD Costa Rica, 2019-2021",
-         xaxis = list(title = "Nombre proyecto"),
-         yaxis = list(title = "N°personas involucradas"))
+  layout(title = "Cantidad de proyectos según marcador de género asignado",
+         xaxis = list(title = "Marcador de género PNUD"),
+         yaxis = list(title = "Número de proyectos "))
 ```
 
