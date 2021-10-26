@@ -59,15 +59,39 @@ asadas <-
 paisajes_productivos2 <-
   st_read(
     "https://francini-ap.github.io/datos_proyectos_unidos_pnud/Geojason_wgs84/paisajes_productivos3.geojson",
-    quiet = TRUE
-  )
-# Lectura de una capa vectorial (GeoJSON) Proyecto Paisajes prodcutivos
-ppd<-
+    quiet = TRUE)
+# Lectura de una capa vectorial (GeoJSON) costas Circulares
+costas_circulares <-
   st_read(
-    "https://francini-ap.github.io/datos_proyectos_unidos_pnud/Geojason_wgs84/ppd.geojson",
+    "https://francini-ap.github.io/datos_proyectos_unidos_pnud/Geojason_wgs84/costas_circulares.geojson",
     quiet = TRUE
   )
-  
+# Lectura de una capa vectorial (GeoJSON) Cuenca Binacional Sixaola
+sixaola <-
+  st_read(
+    "https://francini-ap.github.io/datos_proyectos_unidos_pnud/Geojason_wgs84/cuenca_binacional_sixaola2.geojson",
+    quiet = TRUE
+  )
+# Lectura de una capa vectorial (GeoJSON) DFCR
+dfcr <-
+  st_read(
+    "https://francini-ap.github.io/datos_proyectos_unidos_pnud/Geojason_wgs84/dfcr2.geojson",
+    quiet = TRUE
+  )
+# Lectura de una capa vectorial (GeoJSON) Ecosistemas Marinos
+paca <-
+  st_read(
+    "https://francini-ap.github.io/datos_proyectos_unidos_pnud/Geojason_wgs84/ecosistema_marino_pacifico2.geojson",
+    quiet = TRUE
+  )
+
+# Lectura de una capa vectorial (GeoJSON) PPD
+ppd <-
+  st_read(
+    "https://francini-ap.github.io/datos_proyectos_unidos_pnud/Geojason_wgs84/ppd2.geojson",
+    quiet = TRUE
+  )
+
 # Lectura de una capa raster de DEM
 bio_cr <-
   rast(
@@ -121,6 +145,51 @@ leaflet() %>%
     weight = 3.0,
     opacity = 0.80,
     fillOpacity = 0.8) %>%
+  addPolygons (
+    data = costas_circulares,
+    group = "Costas Circulares",
+    color = "#0468B1",
+    fillColor = "#0468B1",
+    stroke = TRUE,
+    weight = 3.0,
+    opacity = 0.80,
+    fillOpacity = 0.8) %>%
+  addPolygons (
+    data = sixaola,
+    group = "Cuenca Binacional del Rio Sixaola",
+    color = "#0468B1",
+    fillColor = "#0468B1",
+    stroke = TRUE,
+    weight = 3.0,
+    opacity = 0.80,
+    fillOpacity = 0.8) %>%
+  addPolygons (
+    data = dfcr,
+    group = "Distritos de Frio en Costa Rica",
+    color = "#0468B1",
+    fillColor = "#0468B1",
+    stroke = TRUE,
+    weight = 3.0,
+    opacity = 0.80,
+    fillOpacity = 0.8) %>%
+  addPolygons (
+    data = paca,
+    group = "PACA (Ecositemas Marino Pacífico)",
+    color = "#0468B1",
+    fillColor = "#0468B1",
+    stroke = TRUE,
+    weight = 3.0,
+    opacity = 0.80,
+    fillOpacity = 0.8) %>%
+  addPolygons (
+    data = ppd,
+    group = "Programa de Pequeñas Donaciones",
+    color = "#0468B1",
+    fillColor = "#0468B1",
+    stroke = TRUE,
+    weight = 3.0,
+    opacity = 0.80,
+    fillOpacity = 0.8) %>%
   addMeasure(
     position = "bottomleft",
     primaryLengthUnit = "meters",
@@ -131,9 +200,10 @@ leaflet() %>%
 	  addMiniMap(
 		tiles = providers$Esri.WorldStreetMap,
 		toggleDisplay = TRUE)%>%
- addLayersControl(baseGroups = c("OSM", "Esri World Imagery", "Isotermalidad"), 
-                   overlayGroups = c("Proyecto ASADA", "Proyecto Paisajes Productivos"),
-                   options = layersControlOptions(collapsed = FALSE))
+ addLayersControl(baseGroups = c("OSM", "Esri World Imagery", "Raster"), 
+                   overlayGroups = c("Proyecto ASADA", "Proyecto Paisajes Productivos","Costas Circulares","Cuenca Binacional del Rio Sixaola","Distritos de Frio en Costa Rica","PACA (Ecositemas Marino Pacífico)","Programa de Pequeñas Donaciones"),
+                   options = layersControlOptions(collapsed = TRUE))
+
 ```
 
 Column
@@ -187,7 +257,7 @@ proyectos_pnud %>%
   config(locale = "es")%>%
   layout(title = "Cantidad de proyectos por cada programa PNUD, Costa Rica",
          xaxis = list(title = "Programa"),
-         yaxis = list(title = "Número proyectos "))
+         yaxis = list(title = "Número proyectos por programa"))
 
 ```
 
