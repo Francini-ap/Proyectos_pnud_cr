@@ -1,5 +1,5 @@
 ---
-title: "Geovisor del Programa de las Naciones Unidas para el Desarrollo (PNUD) para Costa Rica"
+title: "Geovisor:Programa de las Naciones Unidas para el Desarrollo (PNUD),Costa Rica"
 output: 
   flexdashboard::flex_dashboard:
     orientation: colum
